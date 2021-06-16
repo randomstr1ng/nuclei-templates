@@ -9,19 +9,21 @@ info:
 requests:
   - method: GET
     redirects: true
-    max-redirects: 2
-
+    max-redirects: 5
     path:
       - "{{BaseURL}}/sap/wdisp/admin/public/default.html"
-
     matchers-condition: and
     matchers:
-      - type: word
-        part: header
-        words:
-          - "SAP NetWeaver Application Server"
-
-      - type: word
+      - type: regex
         part: body
-        words:
-          - "<title>Administration</title>"
+        regex:
+          - "SAP Web Dispatcher"
+
+      - type: status
+        status:
+          - 401
+
+      - type: regex
+        part: header
+        regex:
+          - "Basic realm=\"WEB ADMIN\""
